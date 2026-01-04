@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS: An-Nashaih Ad-Diniyyah - Imam Al-Haddad</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #dbeafe;
+            --text-main: #1f2937;
+            --text-light: #6b7280;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        aside {
+            width: 300px;
+            background-color: var(--bg-card);
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .brand {
+            padding: 25px;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        .brand h2 { margin: 0; font-size: 1.4rem; font-weight: 700; }
+        .brand p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
+
+        .nav-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .nav-btn {
+            width: 100%;
+            text-align: left;
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            border-left: 4px solid transparent;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-btn:hover { background-color: var(--accent); color: var(--primary); }
+        .nav-btn.active { 
+            background-color: var(--accent); 
+            border-left-color: var(--primary); 
+            color: var(--primary); 
+            font-weight: 600; 
+        }
+
+        /* MAIN AREA */
+        main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .container.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 15px; margin-top: 0; }
+        
+        /* CONTENT STYLING */
+        .intro-box {
+            background-color: #f8fafc;
+            border-left: 5px solid var(--secondary);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.8;
+        }
+
+        .matan-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .matan-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        .arabic-section {
+            background-color: #f1f5f9;
+            padding: 25px;
+            text-align: right;
+            direction: rtl;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .arabic-text {
+            font-family: 'Traditional Arabic', 'Scheherazade New', serif;
+            font-size: 2rem;
+            color: #1e3a8a;
+            line-height: 2.2;
+            font-weight: bold;
+        }
+
+        .translation-section {
+            padding: 15px 25px;
+            background-color: #fff;
+            border-bottom: 1px dashed #e5e7eb;
+            color: #4b5563;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .explanation-section {
+            padding: 25px;
+            line-height: 1.8;
+            color: #374151;
+            background-color: #fff;
+            text-align: justify;
+        }
+
+        /* QUIZ STYLING */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .question-box { margin-bottom: 25px; }
+
+        .context-text {
+            background-color: #eff6ff;
+            padding: 15px;
+            border-left: 4px solid var(--secondary);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .q-text {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) { border-color: var(--secondary); background-color: #f9fafb; }
+        .option-btn.selected { border-color: var(--secondary); background-color: #eff6ff; }
+        
+        .option-btn.correct { 
+            border-color: var(--success); 
+            background-color: #d1fae5; 
+            color: #065f46;
+        }
+        
+        .option-btn.wrong { 
+            border-color: var(--error); 
+            background-color: #fee2e2; 
+            color: #991b1b;
+        }
+
+        .feedback-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .fb-error { background-color: #fff7ed; border: 1px solid #ffedd5; color: #9a3412; }
+        .fb-success { background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+
+        .next-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            float: right;
+        }
+        
+        .next-btn:hover { background-color: #1e40af; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Citation Style */
+        .cite { font-size: 0.75em; color: #9ca3af; vertical-align: super; margin-left: 2px; }
+
+    </style>
+</head>
+<body>
+
+<aside>
+    <div class="brand">
+        <h2>An-Nashaih</h2>
+        <p>Ad-Diniyyah</p>
+    </div>
+    <div class="nav-scroll">
+        <button class="nav-btn active" onclick="loadSection('intro')">🏠 Pengantar & Penulis</button>
+        <button class="nav-btn" onclick="loadSection('bab1')">1. Takwa</button>
+        <button class="nav-btn" onclick="loadSection('bab2')">2. Ilmu</button>
+        <button class="nav-btn" onclick="loadSection('bab3')">3. Shalat</button>
+        <button class="nav-btn" onclick="loadSection('bab4')">4. Zakat</button>
+        <button class="nav-btn" onclick="loadSection('bab5')">5. Puasa</button>
+        <button class="nav-btn" onclick="loadSection('bab6')">6. Haji</button>
+        <button class="nav-btn" onclick="loadSection('bab7')">7. Amar Ma'ruf</button>
+        <button class="nav-btn" onclick="loadSection('bab8')">8. Jihad</button>
+        <button class="nav-btn" onclick="loadSection('bab9')">9. Kekuasaan & Hak</button>
+        <button class="nav-btn" onclick="loadSection('bab10')">10. Makanan Halal</button>
+        <button class="nav-btn" onclick="loadSection('bab11')">11. Menjaga Hati</button>
+        <button class="nav-btn" onclick="loadSection('quiz')">📝 Kuis (50 Soal)</button>
+    </div>
+</aside>
+
+<main>
+    
+    <!-- INTRO -->
+    <div id="intro" class="container active">
+        <h1>Pengantar Kitab & Biografi Pengarang</h1>
+        
+        <div class="intro-box">
+            <h3>Tentang Pengarang: Imam Al-Haddad</h3>
+            <p>Beliau adalah <strong>Al-Imam Al-Allamah Al-Habib Abdullah bin Alawi Al-Haddad</strong>. Lahir di Subair, pinggiran kota Tarim, Hadramaut, pada malam Kamis, 5 Safar tahun 1044 H [1]. Meskipun beliau kehilangan penglihatannya (buta) sejak kecil akibat penyakit cacar, Allah SWT menggantinya dengan cahaya mata batin (<em>bashirah</em>) yang sangat kuat sehingga beliau menjadi ulama besar yang dijuluki <em>Qutb al-Irshad</em> (Poros Petunjuk) dan Da'i yang menyeru ke jalan Allah [1]. Beliau wafat pada hari Selasa, 7 Dzulqa'dah 1132 H dan dimakamkan di pemakaman Zambal, Tarim [2].</p>
+        </div>
+
+        <div class="intro-box" style="border-left-color: var(--primary);">
+            <h3>Tentang Kitab: An-Nashaih Ad-Diniyyah</h3>
+            <p>Kitab ini berjudul lengkap <strong>"An-Nashaih ad-Diniyyah wal Washaya al-Imaniyyah"</strong> (Nasehat-Nasehat Agama dan Wasiat-Wasiat Keimanan). Disusun dengan tujuan memberikan panduan bagi hamba Allah untuk mencapai kebahagiaan dunia dan akhirat [3]. Imam Al-Haddad menulisnya dengan gaya bahasa yang mudah dipahami (<em>tsalisah mafhumah</em>) agar bermanfaat bagi kalangan awam maupun ulama [4]. Kitab ini dianggap sebagai "inti" dan "sari pati" dari ajaran <em>Ihya' Ulumuddin</em> karya Imam Al-Ghazali [5].</p>
+        </div>
+        
+        <button class="next-btn" style="display:block; float:none;" onclick="loadSection('bab1')">Mulai Belajar &rarr;</button>
+    </div>
+
+    <!-- BAB 1: TAKWA -->
+    <div id="bab1" class="container">
+        <h1>Bab 1: Takwa</h1>
+        <div class="intro-box">
+            Takwa adalah pondasi agama. Imam Haddad mendefinisikannya sebagai pelaksanaan segala perintah Allah dan menjauhi segala larangan-Nya, baik secara lahir maupun batin, disertai rasa pengagungan dan takut kepada Allah. Takwa adalah wasiat universal Allah untuk seluruh umat manusia [6, 7].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَلَقَدْ وَصَّيْنَا الَّذِينَ أُوتُوا الْكِتَابَ مِنْ قَبْلِكُمْ وَإِيَّاكُمْ أَنِ اتَّقُوا اللَّهَ</div></div>
+            <div class="translation-section">"Dan sungguh Kami telah memerintahkan kepada orang-orang yang diberi Kitab sebelum kamu dan juga kepadamu; Maka dari itu bertakwalah kepada Allah." (QS. An-Nisa: 131) [7, 8]</div>
+            <div class="explanation-section">
+                Imam Haddad menjelaskan bahwa perintah takwa bukanlah syariat yang hanya dikhususkan bagi umat Nabi Muhammad SAW saja. Ayat ini menjadi dalil bahwa takwa adalah wasiat abadi dan universal dari Allah SWT yang berlaku untuk umat-umat terdahulu (Ahli Kitab) dan juga umat akhir zaman. Hal ini menunjukkan bahwa keselamatan hakiki di setiap zaman hanya dapat dicapai melalui pintu ketakwaan.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ</div></div>
+            <div class="translation-section">"Barangsiapa yang bertakwa kepada Allah, niscaya Dia akan memberikan baginya jalan keluar. Dan memberikan rezeki dari arah yang tiada disangka-sangkanya." (QS. Ath-Thalaq: 2-3) [9, 10]</div>
+            <div class="explanation-section">
+                Dalam penjelasan ayat ini, ditekankan bahwa takwa adalah kunci solusi (<em>makhraja</em>) bagi segala permasalahan duniawi yang menghimpit manusia. Bagi orang yang bertakwa, Allah menjamin jalan keluar dari kesulitan dan mendatangkan rezeki dari jalur yang tidak terprediksi oleh nalar manusia. Ini mengajarkan kita untuk tidak hanya mengandalkan logika usaha, tetapi menyandarkan hasil pada ketakwaan.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">إِنَّ أَكْرَمَكُمْ عِندَ ٱللَّهِ أَتْقَىٰكُمْ</div></div>
+            <div class="translation-section">"Sesungguhnya orang yang paling mulia diantara kalian disisi Allah adalah orang yang paling bertakwa diantara kalian." (QS. Al-Hujurat: 13) [11]</div>
+            <div class="explanation-section">
+                Matan ini menegaskan standar kemuliaan dalam Islam. Imam Haddad menggarisbawahi bahwa kemuliaan seseorang di hadapan Allah tidak diukur dari garis keturunan (nasab), kekayaan, jabatan, atau rupa fisik. Satu-satunya parameter yang membedakan derajat manusia di sisi Tuhan adalah tingkat ketakwaannya. Semakin tinggi takwa seseorang, semakin mulia kedudukannya.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَٱتَّقُوا۟ ٱللَّهَ وَٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ مَعَ ٱلْمُتَّقِينَ</div></div>
+            <div class="translation-section">"Bertakwalah kepada Allah dan ketahuilah, bahwa Allah bersama orang-orang yang bertakwa." (QS. Al-Baqarah: 194) [8, 12]</div>
+            <div class="explanation-section">
+                Penjelasan mengenai konsep <em>Ma'iyyah</em> (kebersamaan) Allah. Orang-orang yang bertakwa mendapatkan keistimewaan berupa penyertaan khusus dari Allah. Kebersamaan ini bukan sekadar pengetahuan Allah, melainkan berupa dukungan, pertolongan, penjagaan, dan kemenangan dari-Nya. Siapa yang Allah bersamanya, maka tidak ada yang perlu ia takutkan di dunia ini.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">التَّقْوَى عِبَارَةٌ عَنِ امْتِثَالِ أَوَامِرِ اللهِ تَعَالَى وَاجْتِنَابِ نَوَاهِيْهِ ظَاهِرًا وَبَاطِنًا</div></div>
+            <div class="translation-section">"Takwa ibarat menjalankan segala perintah Allah swt dan menjauhi segala larangan-Nya yang dzahir maupun batin." [6, 13]</div>
+            <div class="explanation-section">
+                Ini adalah definisi operasional dari takwa menurut Imam Haddad. Beliau menekankan bahwa takwa harus mencakup dua aspek: <em>Dzhahir</em> (amal anggota tubuh seperti shalat dan puasa) dan <em>Batin</em> (amalan hati seperti ikhlas, takut, dan harap). Ketakwaan tidak sempurna jika hanya tampak di luar tetapi hatinya lalai, atau sebaliknya mengaku hatinya bertakwa tapi tidak mau beribadah fisik.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 2: ILMU -->
+    <div id="bab2" class="container">
+        <h1>Bab 2: Ilmu</h1>
+        <div class="intro-box">
+            Bab ini menjelaskan kewajiban menuntut ilmu bagi setiap Muslim, terutama ilmu <em>Fardhu 'Ain</em> (ilmu dasar agama). Ilmu adalah cahaya yang membimbing amal; tanpa ilmu, amal ibadah berpotensi tertolak atau sesat [14, 15].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ</div></div>
+            <div class="translation-section">"Mencari ilmu adalah kewajiban setiap muslim." [16, 17]</div>
+            <div class="explanation-section">
+                Hadits ini menegaskan status hukum menuntut ilmu. Imam Haddad menjelaskan bahwa mencari ilmu (khususnya ilmu hal/ilmu syariat dasar yang berkaitan dengan keabsahan ibadah dan akidah) bukanlah sunnah atau anjuran semata, melainkan kewajiban mutlak (fardhu) bagi setiap individu Muslim. Kebodohan dalam perkara agama yang pokok tidak dapat dijadikan alasan (udzur) di akhirat kelak.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ بِهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</div></div>
+            <div class="translation-section">"Barangsiapa yang menempuh satu jalan untuk mencari ilmu, dengan ini Allah akan memudahkan baginya jalan menuju surga." [18, 19]</div>
+            <div class="explanation-section">
+                Penjelasan ini memberikan motivasi ukhrawi yang sangat besar. Setiap langkah kaki, biaya, waktu, dan usaha yang dikorbankan seseorang untuk menghadiri majelis ilmu atau mempelajari agama, dinilai oleh Allah sebagai langkah nyata menuju surga. Ilmu adalah lentera yang menerangi jalan yang gelap, sehingga memudahkan pemiliknya melewati jembatan Shiratal Mustaqim.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">يَرْفَعِ ٱللَّهُ ٱلَّذِينَ ءَامَنُوا۟ مِنكُمْ وَٱلَّذِينَ أُوتُوا۟ ٱلْعِلْمَ دَرَجَٰتٍ</div></div>
+            <div class="translation-section">"Allah meninggikan orang-orang yang beriman diantaramu dan orang-orang yang diberi ilmu pengetahuan beberapa derajat." (QS. Al-Mujadalah: 11) [20, 21]</div>
+            <div class="explanation-section">
+                Ayat ini menjelaskan hierarki derajat manusia di sisi Allah. Meskipun semua orang beriman itu mulia, mereka yang memiliki ilmu pengetahuan (ulama) memiliki kedudukan yang jauh lebih tinggi beberapa derajat dibandingkan orang beriman yang awam. Ilmu mengangkat derajat seseorang di dunia dengan penghormatan dan di akhirat dengan pahala yang berlipat.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">فَضْلُ الْعَالِمِ عَلَى الْعَابِدِ كَفَضْلِي عَلَى أَدْنَاكُمْ</div></div>
+            <div class="translation-section">"Keutamaan seorang 'alim di atas seorang ahli ibadah seperti keutamaanku atas seorang yang paling rendah dikalangan sahabatku." [22]</div>
+            <div class="explanation-section">
+                Perbandingan yang sangat mencolok antara orang berilmu dan ahli ibadah tanpa ilmu. Ahli ibadah (abid) hanya memberi manfaat untuk dirinya sendiri, sedangkan orang berilmu (alim) memberi manfaat luas bagi umat dengan ilmunya. Ibadah yang dilakukan tanpa dasar ilmu rentan rusak dan ditolak, sedangkan ilmu menjaga kemurnian agama.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَنْ ازْدَادَ عِلْمًا وَلَمْ يَزْدَدْ هُدًى لَمْ يَزْدَدْ مِنَ اللَّهِ إِلا بُعْدًا</div></div>
+            <div class="translation-section">"Barangsiapa yang bertambah ilmunya tetapi tidak mendapat tambahan petunjuk, berarti ia hanya bertambah jauh dari Allah." [23]</div>
+            <div class="explanation-section">
+                Ini adalah peringatan keras bagi para penuntut ilmu agar tidak hanya mengejar wawasan intelektual semata. Ilmu harus berbuah hidayah (petunjuk) yang termanifestasi dalam amal dan akhlak mulia. Jika ilmu bertambah namun perilaku tidak membaik atau justru semakin sombong, maka ilmu tersebut tidak membawa berkah melainkan justru menjauhkan pemiliknya dari rahmat Allah (Istidraj).
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 3: SHALAT -->
+    <div id="bab3" class="container">
+        <h1>Bab 3: Shalat</h1>
+        <div class="intro-box">
+            Shalat adalah tiang agama dan pembeda antara kekafiran dan keimanan. Bab ini menekankan pentingnya menjaga shalat lima waktu, melaksanakannya di awal waktu, berjamaah, dan dengan kekhusyukan penuh [24, 25].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَىٰ</div></div>
+            <div class="translation-section">"Peliharalah semua shalat(mu), dan (peliharalah) shalat wustha." (QS. Al-Baqarah: 238) [26, 27]</div>
+            <div class="explanation-section">
+                Allah memerintahkan pemeliharaan seluruh waktu shalat fardhu. Secara khusus, ayat ini menekankan <em>Shalat Wustha</em> (shalat pertengahan), yang menurut mayoritas ulama dan konteks hadits yang dikutip Imam Haddad adalah Shalat Ashar. Penekanan ini diberikan karena waktu Ashar seringkali menjadi waktu kelalaian manusia yang sibuk dengan urusan perniagaan atau kelelahan kerja di sore hari.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ</div></div>
+            <div class="translation-section">"Sesungguhnya shalat itu mencegah dari (perbuatan-perbuatan) keji dan munkar." (QS. Al-Ankabut: 45) [28, 29]</div>
+            <div class="explanation-section">
+                Matan ini menjelaskan fungsi moral dan sosial dari shalat. Shalat yang didirikan dengan benar—memenuhi syarat, rukun, dan khusyu'—pasti akan meninggalkan bekas (atsar) dalam jiwa pelakunya. Bekas inilah yang menjadi benteng pertahanan diri yang mencegah seseorang dari melakukan dosa dan kemungkaran di luar waktu shalat. Jika seseorang rajin shalat namun tetap bermaksiat, berarti ada yang kurang sempurna dalam kualitas shalatnya.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">أَوَّلُ الْوَقْتِ رِضْوَانُ اللَّهِ</div></div>
+            <div class="translation-section">"Permulaan waktu (shalat) adalah keridhaan Allah." [30, 31]</div>
+            <div class="explanation-section">
+                Imam Haddad menekankan keutamaan disiplin waktu dalam beribadah. Melaksanakan shalat di awal waktu menunjukkan prioritas seorang hamba yang mendahulukan panggilan Allah di atas urusan duniawi. Hal ini mengundang <em>Ridha</em> Allah. Sebaliknya, menunda-nunda shalat tanpa udzur syar'i hingga akhir waktu adalah tanda kemalasan dan kurangnya perhatian terhadap hak Allah.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">لَيْسَ لِلْعَبْدِ مِنْ صَلاَتِهِ إِلاَّ مَا عَقَلَ مِنْهَا</div></div>
+            <div class="translation-section">"Seorang hamba tiada akan memperoleh dari shalatnya kecuali bagian yang ia sadari (khusyu')." [32, 33]</div>
+            <div class="explanation-section">
+                Hadits ini berbicara tentang bobot pahala shalat. Allah tidak hanya melihat gerakan fisik, tetapi kehadiran hati. Seseorang mungkin shalat penuh secara rakaat, namun pikirannya melayang ke pasar atau pekerjaan. Bagian pahala yang ia dapatkan hanyalah sebatas momen-momen di mana hatinya sadar dan ingat kepada Allah selama shalat tersebut.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">صَلاَةُ الْجَمَاعَةِ تَفْضُلُ صَلاَةَ الْفَذِّ بِسَبْعٍ وَعِشْرِينَ دَرَجَةً</div></div>
+            <div class="translation-section">"Shalat berjamaah lebih utama daripada shalat sendirian sebanyak dua puluh tujuh derajat." [Hadits populer yang dirujuk dalam pembahasan, 123, 389]</div>
+            <div class="explanation-section">
+                Anjuran kuat untuk menjaga shalat berjamaah. Imam Haddad menjelaskan bahwa shalat berjamaah adalah syiar Islam yang sangat agung. Keutamaan 27 derajat menunjukkan selisih pahala yang sangat jauh dibandingkan shalat munfarid (sendirian). Meninggalkan berjamaah tanpa udzur adalah kerugian besar bagi seorang mukmin yang mendambakan pahala akhirat.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 4: ZAKAT -->
+    <div id="bab4" class="container">
+        <h1>Bab 4: Zakat</h1>
+        <div class="intro-box">
+            Bab ini membahas Zakat sebagai rukun Islam yang berkaitan dengan harta. Imam Haddad memperingatkan ancaman keras bagi mereka yang menahan zakat dan menjelaskan pentingnya adab dalam memberi [34, 35].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَأَقِيمُوا الصَّلَاةَ وَآتُوا الزَّكَاةَ</div></div>
+            <div class="translation-section">"Dan dirikanlah shalat, tunaikanlah zakat." (QS. Al-Baqarah: 110) [36]</div>
+            <div class="explanation-section">
+                Dalam Al-Qur'an, perintah menunaikan zakat seringkali disandingkan langsung dengan perintah mendirikan shalat. Hal ini menunjukkan bahwa kesalehan ritual (hubungan dengan Allah melalui shalat) harus seimbang dengan kesalehan sosial (hubungan dengan sesama manusia melalui zakat). Islam tidak mengakui kesalehan yang timpang salah satunya.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَا مِنْ صَاحِبِ ذَهَبٍ وَلاَ فِضَّةٍ... صُفِّحَتْ لَهُ صَفَائِحُ مِنْ نَارٍ</div></div>
+            <div class="translation-section">"Tiada seorangpun pemilik emas dan perak yang tidak menunaikan haknya (zakat), melainkan pada hari kiamat akan dibuatkan untuknya lempengan-lempengan dari api neraka..." [37]</div>
+            <div class="explanation-section">
+                Imam Haddad mengutip hadits yang menggambarkan siksa fisik yang mengerikan bagi penimbun harta. Harta (emas/perak/uang) yang dicintai dan disimpan di dunia tanpa dikeluarkan zakatnya, kelak akan dipanaskan di neraka Jahanam dan digunakan untuk menyetrika tubuh (lambung, dahi, punggung) pemiliknya sendiri. Ini adalah balasan yang setimpal karena mereka lebih mencintai harta daripada mematuhi perintah Allah.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">حَصِّنُوا أَمْوَالَكُمْ بِالزَّكَاةِ</div></div>
+            <div class="translation-section">"Bentengilah harta kalian dengan zakat." [35]</div>
+            <div class="explanation-section">
+                Zakat berfungsi sebagai asuransi spiritual dan penjaga harta. Imam Haddad menjelaskan bahwa harta yang dikeluarkan zakatnya tidak akan berkurang keberkahannya, justru akan terlindungi dari kebinasaan, pencurian, atau bencana. Sebaliknya, harta yang di dalamnya masih bercampur dengan hak fakir miskin (karena tidak dizakati) akan menjadi sebab rusaknya keseluruhan harta tersebut.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">لاَ تُبْطِلُوا۟ صَدَقَٰتِكُم بِٱلْمَنِّ وَٱلْأَذَىٰ</div></div>
+            <div class="translation-section">"Janganlah kamu menghilangkan (pahala) sedekahmu dengan menyebut-nyebutnya dan menyakiti (perasaan si penerima)." (QS. Al-Baqarah: 264) [38]</div>
+            <div class="explanation-section">
+                Penjelasan mengenai etika memberi. Amal sedekah atau zakat bisa menjadi sia-sia dan tidak bernilai di sisi Allah jika disertai dengan <em>Al-Mann</em> (mengungkit-ungkit pemberian di kemudian hari) dan <em>Al-Adza</em> (menyakiti hati penerima dengan kata-kata atau sikap merendahkan). Islam mengajarkan bahwa menjaga perasaan orang miskin jauh lebih mulia daripada sekadar memberikan materi.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">اَللَّهُمَّ أَعْطِ مُنْفِقًا خَلَفًا</div></div>
+            <div class="translation-section">"Ya Allah berikanlah kepada orang yang berinfak ganti (yang lebih baik)." [Doa Malaikat yang masyhur, referensi kontekstual di 149]</div>
+            <div class="explanation-section">
+                Setiap pagi, dua malaikat turun mendoakan manusia. Salah satunya berdoa agar orang yang berinfak diberikan ganti oleh Allah. Keyakinan akan doa malaikat ini harus ditanamkan, bahwa sedekah tidak secara hakiki mengurangi harta, melainkan Allah akan menggantinya baik di dunia dengan rezeki yang tak terduga maupun di akhirat dengan pahala berlipat.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 5: PUASA -->
+    <div id="bab5" class="container">
+        <h1>Bab 5: Puasa</h1>
+        <div class="intro-box">
+            Bab ini mengupas keagungan bulan Ramadhan sebagai bulan Al-Qur'an dan bulan kesabaran. Puasa bukan sekadar menahan lapar, tetapi menahan seluruh anggota tubuh dari maksiat untuk mencapai ketakwaan sejati [39, 40].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ</div></div>
+            <div class="translation-section">"Bulan Ramadhan, bulan yang di dalamnya diturunkan (permulaan) Al-Qur'an." (QS. Al-Baqarah: 185) [39]</div>
+            <div class="explanation-section">
+                Keistimewaan utama Ramadhan terletak pada peristiwa agung turunnya Al-Qur'an (Nuzulul Qur'an). Oleh karena itu, Imam Haddad menganjurkan untuk memperbanyak interaksi dengan Al-Qur'an di bulan ini, baik dengan membaca (tadarus), mentadabburi maknanya, maupun mengamalkan isinya. Ramadhan adalah bulan perayaan ilmu dan wahyu.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">الصَّوْمُ جُنَّةٌ</div></div>
+            <div class="translation-section">"Puasa itu adalah perisai." [40, 41]</div>
+            <div class="explanation-section">
+                Puasa didefinisikan sebagai tameng atau perisai (<em>junnah</em>). Di dunia, puasa melindungi seorang hamba dari serangan hawa nafsu dan godaan syahwat yang merusak. Di akhirat, puasa menjadi perisai yang sesungguhnya yang menghalangi tubuh pelakunya dari sentuhan api neraka.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">كَمْ مِنْ صَائِمٍ لَيْسَ لَهُ مِنْ صِيَامِهِ إِلاَّ الْجُوْعُ وَالْعَطَشُ</div></div>
+            <div class="translation-section">"Betapa banyak orang yang berpuasa tidak mendapatkan apa-apa dari puasanya kecuali lapar dan dahaga." [40]</div>
+            <div class="explanation-section">
+                Sebuah peringatan keras bahwa puasa tidak hanya soal menahan makan dan minum. Jika seseorang berpuasa secara fisik namun lisannya tetap berbohong, menggunjing (ghibah), atau anggota tubuhnya melakukan maksiat, maka nilai spiritual puasanya akan hangus. Ia hanya mendapatkan rasa lapar tanpa pahala di sisi Allah.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">تَسَحَّرُوا فَإِنَّ فِي السَّحُورِ بَرَكَةً</div></div>
+            <div class="translation-section">"Makan sahurlah kalian, karena sesungguhnya dalam sahur itu terdapat keberkahan." [42]</div>
+            <div class="explanation-section">
+                Anjuran untuk makan sahur bukan hanya untuk kekuatan fisik semata agar kuat berpuasa, tetapi karena ada nilai <em>barakah</em> (keberkahan ilahi) yang tersimpan di dalamnya. Sahur juga menjadi waktu yang mustajab untuk beristighfar dan berdoa di waktu sahur (sepertiga malam terakhir).
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ</div></div>
+            <div class="translation-section">"Barangsiapa mendirikan (shalat malam) Ramadhan karena iman dan mengharap pahala, niscaya diampuni dosa-dosanya yang telah lalu." [175 - Konteks Tarawih]</div>
+            <div class="explanation-section">
+                Keutamaan Qiyamul Lail atau Shalat Tarawih di bulan Ramadhan. Jika dilakukan dengan landasan iman yang benar dan niat murni mengharap ridha Allah (<em>ihtisab</em>), bukan karena riya atau ikut-ikutan, maka ibadah ini menjadi sarana penghapusan dosa-dosa kecil yang telah lalu.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 6: HAJI -->
+    <div id="bab6" class="container">
+        <h1>Bab 6: Haji</h1>
+        <div class="intro-box">
+            Bab ini menjelaskan kewajiban Haji bagi yang mampu (<em>istitha'ah</em>) dan peringatan keras agar tidak menundanya. Haji adalah perjalanan spiritual menuju Baitullah yang memerlukan bekal halal dan niat lurus [43, 44].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَلِلَّهِ عَلَى النَّاسِ حِجُّ الْبَيْتِ مَنِ اسْتَطَاعَ إِلَيْهِ سَبِيلًا</div></div>
+            <div class="translation-section">"Mengerjakan haji adalah kewajiban manusia terhadap Allah, yaitu (bagi) orang yang sanggup mengadakan perjalanan ke Baitullah." (QS. Ali Imran: 97) [43]</div>
+            <div class="explanation-section">
+                Ayat ini adalah dalil wajibnya ibadah haji. Kewajiban ini diikat dengan syarat <em>Istitha'ah</em> (kemampuan), baik secara finansial, fisik, maupun keamanan perjalanan. Imam Haddad menekankan bahwa haji adalah hak Allah atas hamba-Nya, sehingga menunaikannya adalah bentuk kepatuhan mutlak.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَنْ مَلَكَ زَادًا... وَلَمْ يَحُجَّ... فَلْيَمُتْ إِنْ شَاءَ يَهُودِيًّا أَوْ نَصْرَانِيًّا</div></div>
+            <div class="translation-section">"Barangsiapa memiliki bekal dan kendaraan... namun ia tidak berhaji, maka terserah ia mati sebagai Yahudi atau Nasrani." [44]</div>
+            <div class="explanation-section">
+                Sebuah ancaman yang sangat berat (<em>Taghlizh</em>) bagi orang yang sudah mampu secara materi dan fisik namun menunda-nunda atau enggan berhaji hingga meninggal dunia. Hadits ini menyamakan status kematiannya dengan non-muslim sebagai bentuk kecaman keras atas keingkarannya terhadap rukun Islam.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">الْحَجُّ الْمَبْرُورُ لَيْسَ لَهُ جَزَاءٌ إِلاَّ الْجَنَّةُ</div></div>
+            <div class="translation-section">"Haji yang mabrur tidak ada balasan baginya melainkan surga." [190 - rujukan umum hadits shahih]</div>
+            <div class="explanation-section">
+                Janji Allah bagi mereka yang hajinya diterima (Mabrur). Haji Mabrur adalah haji yang tidak dicampuri dengan dosa, dilaksanakan dengan bekal halal, dan pelakunya kembali menjadi pribadi yang lebih baik dari sebelumnya. Balasannya tidak lain adalah surga yang abadi.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">أَفْضَلُ الْجِهَادِ الْحَجُّ</div></div>
+            <div class="translation-section">"Sebaik-baik jihad adalah haji." [190 - dalam konteks bagi wanita/orang lemah]</div>
+            <div class="explanation-section">
+                Bagi mereka yang tidak diwajibkan berperang secara fisik (seperti wanita, orang tua, atau orang lemah), ibadah haji dinilai setara dengan jihad di jalan Allah. Hal ini karena haji juga menuntut pengorbanan harta, fisik, dan menahan kesulitan dalam perjalanan demi menaati Allah.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَاءُ زَمْزَمَ لِمَا شُرِبَ لَهُ</div></div>
+            <div class="translation-section">"Air zam-zam itu (berkhasiat) tergantung niat peminumnya." [45]</div>
+            <div class="explanation-section">
+                Keistimewaan air Zam-zam terletak pada keberkahan dan keyakinan peminumnya. Jika diminum dengan niat kesembuhan, Allah akan menyembuhkan. Jika diminum untuk menghilangkan dahaga atau meminta ilmu, Allah akan mengabulkan. Ini mengajarkan pentingnya niat dan doa saat meminum air mulia ini.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 7: AMAR MA'RUF -->
+    <div id="bab7" class="container">
+        <h1>Bab 7: Amar Ma'ruf Nahi Munkar</h1>
+        <div class="intro-box">
+            Bab ini membahas poros agama, yaitu kewajiban mengajak kepada kebaikan dan mencegah kemungkaran. Meninggalkan tugas ini dapat mengundang bencana umum dan doa yang tidak dikabulkan [46, 47].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَلْتَكُن مِّنكُمْ أُمَّةٌ يَدْعُونَ إِلَى ٱلْخَيْرِ وَيَأْمُرُونَ بِٱلْمَعْرُوفِ وَيَنْهَوْنَ عَنِ ٱلْمُنكَرِ</div></div>
+            <div class="translation-section">"Dan hendaklah ada diantara kalian segolongan umat yang menyeru kepada kebajikan, serta menyeru kepada yang ma'ruf dan mencegah dari yang munkar." (QS. Ali Imran: 104) [47, 48]</div>
+            <div class="explanation-section">
+                Ayat ini menjadi dasar kewajiban dakwah. Keberadaan kelompok pendakwah adalah <em>Fardhu Kifayah</em> untuk menjaga moralitas masyarakat. Jika tugas ini ditinggalkan sama sekali oleh suatu kaum, maka seluruh masyarakat tersebut menanggung dosa dan kerusakan.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَنْ رَأَى مِنْكُمْ مُنْكَرًا فَلْيُغَيِّرْهُ بِيَدِهِ</div></div>
+            <div class="translation-section">"Barangsiapa diantara kalian yang melihat kemunkaran, maka hendaknya ia merubahnya dengan tangannya (kekuasaan)." [49]</div>
+            <div class="explanation-section">
+                Hadits ini menjelaskan tingkatan dalam merubah kemungkaran. Tingkatan tertinggi adalah dengan tangan/kekuasaan (bagi pemimpin/pemerintah/kepala keluarga). Jika tidak mampu, dengan lisan (nasehat para ulama). Jika tidak mampu, dengan hati (membenci maksiat tersebut), dan itu adalah selemah-lemahnya iman.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">أَفْضَلُ الْجِهَادِ كَلِمَةُ حَقٍّ عِنْدَ سُلْطَانٍ جَائِرٍ</div></div>
+            <div class="translation-section">"Sebaik-baik jihad adalah pengutaraan kalimat kebenaran dihadapan pemimpin yang kejam." [50]</div>
+            <div class="explanation-section">
+                Keberanian mengoreksi penguasa yang dzalim adalah puncak jihad karena risikonya yang sangat tinggi (nyawa/harta). Namun, ini harus dilakukan dengan bijak dan niat tulus demi kemaslahatan umat, bukan untuk pemberontakan yang merusak.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَا كَانَ الرِّفْقُ فِي شَيْءٍ إِلَّا زَانَهُ</div></div>
+            <div class="translation-section">"Tidaklah sifat belas kasihan (lemah lembut) itu terletak pada suatu perkara, melainkan ia akan membuatnya indah." [51]</div>
+            <div class="explanation-section">
+                Imam Haddad menekankan metode dakwah. Amar ma'ruf nahi munkar harus dilakukan dengan <em>Rifq</em> (lemah lembut), bukan dengan kekerasan atau kata-kata kasar yang justru menjauhkan orang dari kebenaran. Kekerasan dalam dakwah seringkali merusak tujuan dakwah itu sendiri.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَلَيَنصُرَنَّ ٱللَّهُ مَن يَنصُرُهُۥ</div></div>
+            <div class="translation-section">"Sesungguhnya Allah pasti menolong orang yang menolong (agama)-Nya." (QS. Al-Hajj: 40) [52]</div>
+            <div class="explanation-section">
+                Jaminan pertolongan Allah bagi para penegak agama. Siapa yang memperjuangkan syariat Allah dan memperbaiki kondisi umat, Allah berjanji akan menjadi pelindung dan penolongnya dalam menghadapi berbagai rintangan.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 8: JIHAD -->
+    <div id="bab8" class="container">
+        <h1>Bab 8: Jihad</h1>
+        <div class="intro-box">
+            Bab ini membahas jihad dalam arti luas (memerangi hawa nafsu) dan arti khusus (perang di jalan Allah). Pentingnya niat ikhlas dalam berjihad ditekankan agar tidak sia-sia [53, 54].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَفَضَّلَ اللَّهُ الْمُجَاهِدِينَ عَلَى الْقَاعِدِينَ أَجْرًا عَظِيمًا</div></div>
+            <div class="translation-section">"Dan Allah melebihkan orang-orang yang berjihad atas orang-orang yang duduk dengan pahala yang besar." (QS. An-Nisa: 95) [55, 56]</div>
+            <div class="explanation-section">
+                Allah memberikan derajat yang jauh lebih tinggi bagi mereka yang aktif berjuang (mujahid) dibandingkan mereka yang pasif berdiam diri tanpa udzur. Perjuangan memerlukan pengorbanan, dan balasan sesuai dengan kadar pengorbanan tersebut.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">إِنَّ اللَّهَ اشْتَرَىٰ مِنَ الْمُؤْمِنِينَ أَنفُسَهُمْ وَأَمْوَالَهُم بِأَنَّ لَهُمُ الْجَنَّةَ</div></div>
+            <div class="translation-section">"Sesungguhnya Allah telah membeli dari orang-orang mukmin, diri dan harta mereka dengan memberikan surga untuk mereka." (QS. At-Taubah: 111) [57]</div>
+            <div class="explanation-section">
+                Ini adalah transaksi agung antara mukmin dan Allah. Allah "membeli" jiwa dan harta yang dikorbankan di jalan-Nya, dan "bayarannya" adalah surga abadi. Transaksi ini menunjukkan betapa mahalnya harga diri seorang mukmin yang syahid.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">الْمُجَاهِدُ مَنْ جَاهَدَ نَفْسَهُ</div></div>
+            <div class="translation-section">"Seorang pejuang adalah yang berjuang melawan hawa nafsunya." [58]</div>
+            <div class="explanation-section">
+                Esensi jihad yang paling mendasar adalah menundukkan ego dan nafsu pribadi agar tunduk pada syariat Allah. Tanpa kemenangan melawan hawa nafsu diri sendiri, seseorang tidak akan mampu berjihad melawan musuh luar dengan benar dan ikhlas.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">رَجَعْتُمْ مِنَ الْجِهَادِ الْأَصْغَرِ إِلَى الْجِهَادِ الْأَكْبَرِ</div></div>
+            <div class="translation-section">"Kalian telah kembali dari jihad yang kecil menuju jihad yang lebih besar (jihad melawan hawa nafsu)." [58]</div>
+            <div class="explanation-section">
+                Perang fisik disebut "Jihad Kecil" karena waktunya terbatas dan musuhnya terlihat. Sedangkan perang melawan hawa nafsu disebut "Jihad Akbar" karena musuhnya ada dalam diri sendiri, tidak terlihat, dan pertempurannya berlangsung seumur hidup tanpa henti.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَنْ قَاتَلَ لِتَكُونَ كَلِمَةُ اللهِ هِيَ الْعُلْيَا فَهُوَ فِي سَبِيلِ اللهِ</div></div>
+            <div class="translation-section">"Barangsiapa berperang untuk meninggikan kalimat Allah, maka itulah yang berada di jalan Allah." [59]</div>
+            <div class="explanation-section">
+                Niat adalah penentu. Seseorang yang berperang karena ingin disebut pahlawan, karena fanatisme golongan, atau karena harta rampasan, tidak dinilai sebagai jihad fi sabilillah. Hanya mereka yang murni berniat meninggikan agama Allah yang diterima jihadnya.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 9: KEKUASAAN & HAK-HAK -->
+    <div id="bab9" class="container">
+        <h1>Bab 9: Kekuasaan & Hak-Hak</h1>
+        <div class="intro-box">
+            Bab ini mengatur hubungan sosial yang adil. Mulai dari kewajiban pemimpin, hak orang tua (<em>birrul walidain</em>), kerabat, hingga hak tetangga dan sesama muslim [60, 61].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَا مِنْ وَالٍ... يَمُوتُ وَهُوَ غَاشٌّ... إِلاَّ حَرَّمَ اللَّهُ عَلَيْهِ الْجَنَّةَ</div></div>
+            <div class="translation-section">"Tiada seorang pemimpin yang memimpin rakyat muslim lalu ia mati dalam keadaan menipu rakyatnya, melainkan Allah haramkan surga atasnya." [62]</div>
+            <div class="explanation-section">
+                Peringatan keras bagi para pejabat dan pemimpin. Pengkhianatan terhadap amanah rakyat adalah dosa besar yang konsekuensinya adalah tertutupnya pintu surga. Pemimpin wajib melayani dan jujur, bukan menipu atau mendzalimi rakyatnya.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَقَضَىٰ رَبُّكَ أَلَّا تَعْبُدُوٓا۟ إِلَّآ إِيَّاهُ وَبِٱلْوَٰلِدَيْنِ إِحْسَٰنًا</div></div>
+            <div class="translation-section">"Dan Tuhanmu telah memerintahkan agar dirimu jangan menyembah selain-Nya dan hendaklah engkau berbuat baik pada ibu bapakmu." (QS. Al-Isra: 23) [63]</div>
+            <div class="explanation-section">
+                Posisi orang tua sangat agung dalam Islam. Perintah berbakti kepada mereka diletakkan langsung setelah perintah Tauhid (menyembah Allah semata). Ini menunjukkan bahwa ridha Allah sangat bergantung pada bagaimana seseorang memperlakukan kedua orang tuanya.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">مَا زَالَ جِبْرِيلُ يُوصِينِي بِالْجَارِ حَتَّى ظَنَنْتُ أَنَّهُ سَيُوَرِّثُهُ</div></div>
+            <div class="translation-section">"Malaikat Jibril selalu berwasiat kepadaku mengenai tetangga, sehingga aku mengira mereka (para tetangga) akan menerima warisan." [64]</div>
+            <div class="explanation-section">
+                Islam sangat memuliakan tetangga. Berbuat baik kepada tetangga adalah indikator keimanan. Jibril terus menerus mengingatkan hak tetangga hingga Nabi mengira tetangga akan mendapat bagian harta waris, menunjukkan betapa dekatnya hubungan yang harus dijaga.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">حَقُّ الْمُسْلِمِ عَلَى الْمُسْلِمِ سِتٌّ</div></div>
+            <div class="translation-section">"Hak seorang muslim atas muslim lainnya ada enam." [65]</div>
+            <div class="explanation-section">
+                Solidaritas umat Islam dibangun di atas pemenuhan hak-hak sosial dasar: menjawab salam, memenuhi undangan, memberi nasehat, mendoakan yang bersin, menjenguk yang sakit, dan mengantar jenazah. Ini adalah perekat ukhuwah islamiyah.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَآتِ ذَا الْقُرْبَى حَقَّهُ</div></div>
+            <div class="translation-section">"Dan berikanlah kepada keluarga-keluarga yang dekat akan haknya." (QS. Al-Isra: 26) [66]</div>
+            <div class="explanation-section">
+                Menyambung silaturahmi dengan kerabat bukan sekadar tradisi, tapi kewajiban agama. Kerabat memiliki hak untuk dibantu, dikunjungi, dan diperlakukan dengan baik. Memutus silaturahmi adalah dosa besar yang dapat menahan turunnya rahmat Allah.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 10: MAKANAN HALAL -->
+    <div id="bab10" class="container">
+        <h1>Bab 10: Makanan Halal</h1>
+        <div class="intro-box">
+            Bab ini menekankan pentingnya mencari rezeki yang halal dan menjauhi yang haram serta syubhat (<em>Wara'</em>). Makanan haram dapat mengeraskan hati dan menghalangi terkabulnya doa [67, 68].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">يَا أَيُّهَا النَّاسُ كُلُوا مِمَّا فِي الْأَرْضِ حَلَالًا طَيِّبًا</div></div>
+            <div class="translation-section">"Wahai sekalian manusia, makanlah yang halal lagi baik dari apa yang terdapat di bumi." (QS. Al-Baqarah: 168) [68]</div>
+            <div class="explanation-section">
+                Perintah memakan yang halal dan <em>thayyib</em> (baik/sehat/bergizi) adalah perintah universal. Makanan yang masuk ke tubuh akan menjadi darah daging dan energi. Energi dari makanan halal akan mendorong pada ketaatan, sedangkan energi haram mendorong maksiat.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">كُلُّ لَحْمٍ نَبَتَ مِنْ سُحْتٍ فَالنَّارُ أَوْلَى بِهِ</div></div>
+            <div class="translation-section">"Setiap daging yang tumbuh dari barang haram, maka neraka adalah tempat yang layak baginya." [69]</div>
+            <div class="explanation-section">
+                Ancaman keras bagi pemakan harta haram. Tubuh yang dibesarkan dengan makanan haram tidak pantas masuk surga yang suci. Tempat yang sesuai untuk membersihkan daging haram tersebut adalah api neraka.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">أَطِبْ مَطْعَمَكَ تَكُنْ مُسْتَجَابَ الدَّعْوَةِ</div></div>
+            <div class="translation-section">"Perbaikilah makananmu niscaya do'amu akan dikabulkan." [70]</div>
+            <div class="explanation-section">
+                Kunci utama terkabulnya doa bukanlah panjangnya rapalan atau kerasnya suara, melainkan bersihnya makanan yang masuk ke dalam perut dari unsur haram. Seseorang yang pakaian dan makanannya haram, doanya tertolak meskipun ia memohon dengan sangat.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَذَرُوا مَا بَقِيَ مِنَ الرِّبَا</div></div>
+            <div class="translation-section">"Dan tinggalkanlah sisa riba (yang belum dipungut)." (QS. Al-Baqarah: 278) [71]</div>
+            <div class="explanation-section">
+                Riba adalah dosa besar yang diperangi langsung oleh Allah dan Rasul-Nya. Meninggalkan riba adalah bukti ketakwaan yang nyata dalam aspek ekonomi. Tidak ada keberkahan dalam harta yang bercampur riba, ia justru akan memusnahkan harta tersebut.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">إِنَّمَا الْخَمْرُ وَالْمَيْسِرُ... رِجْسٌ مِنْ عَمَلِ الشَّيْطَانِ</div></div>
+            <div class="translation-section">"Sesungguhnya khamar (minuman keras), berjudi... adalah perbuatan keji termasuk perbuatan setan." (QS. Al-Maidah: 90) [72]</div>
+            <div class="explanation-section">
+                Minuman keras (khamr) disebut sebagai <em>Ummul Khabaits</em> (induk segala kejahatan). Ia menghilangkan akal sehat, yang merupakan anugerah terbesar manusia. Judi juga disandingkan dengannya karena merusak tatanan sosial dan ekonomi serta menimbulkan permusuhan.
+            </div>
+        </div>
+    </div>
+
+    <!-- BAB 11: MENJAGA HATI -->
+    <div id="bab11" class="container">
+        <h1>Bab 11: Menjaga Hati & Anggota Tubuh</h1>
+        <div class="intro-box">
+            Bab ini adalah inti tasawuf, membahas penjagaan tujuh anggota tubuh dari dosa serta pembersihan hati dari penyakit seperti riya, hasad, dan sombong. Hati adalah raja bagi seluruh anggota tubuh [73].
+        </div>
+
+        <!-- Matan 1 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">إِنَّ السَّمْعَ وَالْبَصَرَ وَالْفُؤَادَ كُلُّ أُولَٰئِكَ كَانَ عَنْهُ مَسْئُولًا</div></div>
+            <div class="translation-section">"Sesungguhnya pendengaran, penglihatan dan hati, semua itu akan diminta pertanggung jawabannya." (QS. Al-Isra: 36) [74]</div>
+            <div class="explanation-section">
+                Setiap indera adalah amanah dari Allah. Mata bukan hanya untuk melihat, telinga bukan hanya untuk mendengar, tapi keduanya adalah saluran informasi ke hati. Menggunakannya untuk maksiat adalah pengkhianatan amanah yang akan dihisab secara detail di akhirat.
+            </div>
+        </div>
+
+        <!-- Matan 2 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">أَلاَ وَإِنَّ فِي الْجَسَدِ مُضْغَةً... أَلاَ وَهِيَ الْقَلْبُ</div></div>
+            <div class="translation-section">"Ketahuilah sesungguhnya dalam tubuh terdapat sepotong daging... ketahuilah bahwa hal itu adalah hati." [75]</div>
+            <div class="explanation-section">
+                Hati adalah komandan, dan anggota tubuh adalah prajuritnya. Jika rajanya (hati) baik, maka prajuritnya akan melakukan hal-hal baik. Perbaikan moral manusia harus dimulai dari pembersihan hati (Tazkiyatun Nafs), karena fisik hanyalah pelaksana perintah hati.
+            </div>
+        </div>
+
+        <!-- Matan 3 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">النَّظْرَةُ سَهْمٌ مَسْمُومٌ مِنْ سِهَامِ إِبْلِيسَ</div></div>
+            <div class="translation-section">"Pandangan (yang haram) adalah salah satu panah beracun dari anak panah iblis." [76]</div>
+            <div class="explanation-section">
+                Menjaga pandangan (<em>Ghaddul Bashar</em>) sangat krusial. Pandangan liar yang melihat hal-hal haram ibarat panah beracun yang langsung menembus hati, meracuninya dengan syahwat, dan mematikan cahaya iman. Menjaga mata adalah langkah awal menjaga kemaluan.
+            </div>
+        </div>
+
+        <!-- Matan 4 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">وَاحْفَظْ لِسَانَكَ</div></div>
+            <div class="translation-section">"Dan jagalah lisanmu." (Konsep umum dari bab bahaya lisan) [77, 78]</div>
+            <div class="explanation-section">
+                Lisan adalah anggota tubuh yang paling banyak menjerumuskan manusia ke dalam neraka. Bahaya lisan meliputi ghibah (menggunjing), namimah (adu domba), dusta, dan sumpah palsu. Menjaga lisan adalah jaminan keselamatan di dunia dan akhirat.
+            </div>
+        </div>
+
+        <!-- Matan 5 -->
+        <div class="matan-card">
+            <div class="arabic-section"><div class="arabic-text">لَا يَدْخُلُ الْجَنَّةَ مَنْ كَانَ فِي قَلْبِهِ مِثْقَالَ ذَرَّةٍ مِنْ كِبْرٍ</div></div>
+            <div class="translation-section">"Tidak akan masuk surga seseorang yang didalam hatinya terdapat rasa sombong meski sebesar atom." [79, 80]</div>
+            <div class="explanation-section">
+                Kesombongan (<em>Kibr</em>) adalah selendang Allah. Manusia yang sombong berarti merampas hak Allah. Sifat ini sangat berbahaya karena dapat menghalangi seseorang dari kebenaran dan menutup pintu surga. Sombong adalah menolak kebenaran dan meremehkan orang lain.
+            </div>
+        </div>
+    </div>
+
+    <!-- KUIS SECTION -->
+    <div id="quiz" class="container">
+        <h1>Kuis Interaktif: 50 Soal</h1>
+        <div class="intro-box">
+            Uji pemahaman Anda tentang isi kitab An-Nashaih Ad-Diniyyah.
+            <ul>
+                <li>Setiap soal akan muncul satu per satu.</li>
+                <li>Jika jawaban salah, Anda akan mendapat <strong>Petunjuk (Clue)</strong>.</li>
+                <li>Anda tidak bisa lanjut ke soal berikutnya sebelum menjawab dengan benar.</li>
+            </ul>
+        </div>
+
+        <div class="quiz-header">
+            <span id="q-counter">Soal 1 dari 50</span>
+            <span id="score-display">Skor: 0</span>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div id="quiz-area">
+            <!-- Question generated by JS -->
+        </div>
+
+        <div id="feedback" class="feedback-box"></div>
+        <button id="next-q-btn" class="next-btn" onclick="nextQuestion()">Lanjut ke Soal Berikutnya &rarr;</button>
+        
+        <div id="quiz-finish" style="display:none; text-align:center;">
+            <h2>🎉 Alhamdulillah!</h2>
+            <p>Anda telah menyelesaikan seluruh rangkaian kuis kitab An-Nashaih Ad-Diniyyah.</p>
+            <p>Semoga ilmu yang dipelajari menjadi ilmu yang bermanfaat dan barokah.</p>
+            <button class="nav-btn" style="background:var(--primary); color:white; justify-content:center; margin-top:20px;" onclick="location.reload()">Ulangi Materi</button>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    // --- DATA KUIS 50 SOAL (Kontekstual) ---
+    const quizData = [
+        {
+            context: "Dalam sejarah penyusunan kitab kuning, seorang ulama besar dari Hadramaut menulis kitab nasehat ini. Meskipun beliau kehilangan penglihatannya sejak kecil akibat penyakit cacar, mata batinnya sangat tajam hingga dijuluki 'Qutb al-Irshad'.",
+            q: "Siapakah nama lengkap pengarang kitab An-Nashaih Ad-Diniyyah ini?",
+            opts: ["Imam Al-Ghazali", "Al-Habib Abdullah bin Alawi Al-Haddad", "Syekh Abdul Qadir Al-Jailani", "Imam An-Nawawi"],
+            a: 1,
+            hint: "Beliau lahir di Subair, Tarim dan bermarga Al-Haddad."
+        },
+        {
+            context: "Dalam Bab Takwa, Imam Haddad mengutip ayat Al-Qur'an (QS. An-Nisa: 131) yang menyatakan bahwa Allah telah mewasiatkan takwa tidak hanya kepada umat Nabi Muhammad SAW, tetapi juga kepada umat-umat terdahulu yang diberi Al-Kitab.",
+            q: "Apa kesimpulan utama yang bisa diambil dari ayat tersebut mengenai posisi 'Takwa'?",
+            opts: ["Takwa hanya wajib bagi para Ustaz", "Takwa adalah syariat khusus umat akhir zaman", "Takwa adalah wasiat universal Allah untuk seluruh umat manusia sepanjang masa", "Takwa hanya berlaku saat bulan Ramadhan"],
+            a: 2,
+            hint: "Perintah ini berlaku untuk 'orang-orang sebelum kamu' dan 'kamu'."
+        },
+        {
+            context: "Seseorang sedang menghadapi masalah ekonomi yang sangat pelik dan merasa jalan buntu. Imam Haddad menasehatkan sebuah ayat (QS. Ath-Thalaq: 2-3) sebagai solusi spiritual.",
+            q: "Menurut ayat tersebut, apa jaminan Allah bagi orang yang bertakwa dalam menghadapi kesulitan hidup?",
+            opts: ["Akan diberikan jalan keluar (makhraja) dan rezeki tak terduga", "Akan langsung menjadi kaya raya tanpa usaha", "Akan terbebas dari kewajiban beribadah", "Akan diangkat menjadi pemimpin"],
+            a: 0,
+            hint: "Ingatlah ayat 'Wayarzuqhu min haitsu laa yahtasib'."
+        },
+        {
+            context: "Imam Haddad menjelaskan bahwa Allah tidak memandang nasab atau kekayaan dalam menilai seseorang. Beliau mengutip QS. Al-Hujurat ayat 13.",
+            q: "Apa satu-satunya standar kemuliaan manusia di sisi Allah menurut ayat tersebut?",
+            opts: ["Kekayaan yang banyak", "Jabatan yang tinggi", "Ketakwaan", "Ketampanan/Kecantikan"],
+            a: 2,
+            hint: "Inna akramakum 'indallahi..."
+        },
+        {
+            context: "Definisi takwa mencakup aspek lahir dan batin. Tidak cukup hanya salah satunya.",
+            q: "Manakah definisi Takwa yang paling tepat menurut Imam Haddad?",
+            opts: ["Hanya shalat malam setiap hari", "Menjalankan perintah Allah dan menjauhi larangan-Nya secara dzhahir dan batin", "Mengasingkan diri di gunung", "Hanya berniat baik tanpa beramal"],
+            a: 1,
+            hint: "Harus ada 'imtitsal' (pelaksanaan perintah) dan 'ijtinab' (menjauhi larangan)."
+        },
+        {
+            context: "Dalam bab Ilmu, dijelaskan sebuah hadits: 'Barangsiapa menempuh suatu jalan untuk mencari ilmu...'",
+            q: "Apa balasan yang Allah janjikan dalam kelanjutan hadits tersebut?",
+            opts: ["Allah akan memberinya harta karun", "Allah akan memudahkan baginya jalan menuju surga", "Allah akan menjadikannya pejabat", "Allah akan memanjangkan umurnya"],
+            a: 1,
+            hint: "Sahhalallahu lahu bihi thariqan ila al-jannah."
+        },
+        {
+            context: "Imam Haddad membagi ilmu menjadi Fardhu 'Ain dan Fardhu Kifayah. Ilmu Fardhu 'Ain wajib bagi setiap individu.",
+            q: "Manakah di bawah ini yang termasuk kategori ilmu Fardhu 'Ain?",
+            opts: ["Ilmu Kedokteran", "Ilmu tentang tata cara shalat yang sah dan akidah dasar", "Ilmu Falak dan Astronomi", "Ilmu Perbandingan Agama"],
+            a: 1,
+            hint: "Ilmu yang tanpanya ibadah harianmu tidak sah."
+        },
+        {
+            context: "Allah mengangkat derajat manusia berdasarkan dua hal utama sebagaimana disebut dalam QS. Al-Mujadalah: 11.",
+            q: "Apakah dua hal tersebut?",
+            opts: ["Iman dan Harta", "Iman dan Ilmu", "Ilmu dan Jabatan", "Iman dan Kesehatan"],
+            a: 1,
+            hint: "Yarfaillahulladzina amanu minkum walladzina utul 'ilma..."
+        },
+        {
+            context: "Ada peringatan keras bagi orang yang bertambah ilmunya (pintar) tetapi tidak bertambah hidayahnya (kelakuannya tidak membaik).",
+            q: "Apa akibat bagi orang tersebut menurut hadits?",
+            opts: ["Ia akan semakin kaya", "Ia hanya akan semakin jauh dari Allah", "Ia akan disegani orang", "Ia akan cepat masuk surga"],
+            a: 1,
+            hint: "Lam yazdad minallahi illa bu'dan."
+        },
+        {
+            context: "Terkait Shalat Wustha yang diperintahkan untuk dijaga dalam QS. Al-Baqarah 238, banyak ulama berbeda pendapat.",
+            q: "Menurut pendapat yang dikutip Imam Haddad dan mayoritas ulama, Shalat Wustha adalah?",
+            opts: ["Shalat Subuh", "Shalat Dzhuhur", "Shalat Ashar", "Shalat Isya"],
+            a: 2,
+            hint: "Shalat di waktu sore hari."
+        },
+        {
+            context: "Shalat memiliki fungsi sosial dan moral bagi pelakunya sebagaimana disebut dalam QS. Al-Ankabut: 45.",
+            q: "Apa fungsi shalat tersebut?",
+            opts: ["Melancarkan rezeki", "Mencegah dari perbuatan keji dan munkar", "Membuat tubuh sehat", "Menambah teman"],
+            a: 1,
+            hint: "Tanha 'anil fahsya'i wal munkar."
+        },
+        {
+            context: "Imam Haddad menekankan pentingnya shalat di awal waktu. Beliau mengutip sebuah hadits.",
+            q: "Apa keutamaan shalat di awal waktu (awwalul waqti)?",
+            opts: ["Mendapat Ridha Allah", "Mendapat Ampunan Allah", "Mendapat Surga", "Mendapat Rezeki"],
+            a: 0,
+            hint: "Awwalul waqti ridhwanullah."
+        },
+        {
+            context: "Shalat tidak hanya sekadar gerakan fisik. Ada 'ruh' shalat yang menentukan diterima atau tidaknya.",
+            q: "Apa 'ruh' shalat yang dimaksud dalam hadits 'Tidak ada bagi hamba dari shalatnya kecuali...'?",
+            opts: ["Apa yang ia hafal", "Apa yang ia sadari/khusyu' di dalamnya", "Apa yang ia kerjakan dengan cepat", "Apa yang ia pakai"],
+            a: 1,
+            hint: "Ma 'aqala minha (apa yang ia sadari)."
+        },
+        {
+            context: "Tentang ancaman bagi penimbun harta (emas/perak) yang enggan membayar zakat.",
+            q: "Siksaan seperti apa yang digambarkan dalam hadits bagi mereka di hari kiamat?",
+            opts: ["Hartanya akan hilang", "Dibuatkan lempengan dari api neraka untuk menyetrika tubuhnya", "Akan menjadi miskin", "Akan dikucilkan"],
+            a: 1,
+            hint: "Lempengan yang dipanaskan di neraka Jahanam."
+        },
+        {
+            context: "Dalam bersedekah, ada hal-hal yang dapat membatalkan pahalanya (QS. Al-Baqarah: 264).",
+            q: "Perbuatan apakah yang dapat membatalkan pahala sedekah?",
+            opts: ["Memberi dengan sembunyi", "Al-Mann (mengungkit) dan Al-Adza (menyakiti)", "Memberi barang bekas", "Memberi kepada kerabat"],
+            a: 1,
+            hint: "Jangan menyebut-nyebut pemberianmu."
+        },
+        {
+            context: "Setiap pagi dua malaikat turun mendoakan manusia.",
+            q: "Apa doa malaikat bagi orang yang berinfak?",
+            opts: ["Ya Allah, tahanlah hartanya", "Ya Allah, berikanlah ganti bagi yang berinfak", "Ya Allah, jadikan dia kaya", "Ya Allah, habiskan hartanya"],
+            a: 1,
+            hint: "Allahumma a'thi munfiqan khalafan."
+        },
+        {
+            context: "Puasa Ramadhan memiliki banyak keutamaan. Salah satunya terkait dengan Al-Qur'an.",
+            q: "Mengapa bulan Ramadhan disebut sangat istimewa dalam QS. Al-Baqarah: 185?",
+            opts: ["Karena ada Idul Fitri", "Karena di dalamnya diturunkan Al-Qur'an", "Karena setan dibelenggu", "Karena pintu surga dibuka"],
+            a: 1,
+            hint: "Syahru ramadhan alladzi unzila fihil qur'an."
+        },
+        {
+            context: "Nabi SAW menyebut puasa dengan istilah 'Junnah'.",
+            q: "Apa arti 'Junnah' dalam konteks puasa?",
+            opts: ["Pedang", "Perisai/Tameng", "Taman", "Cahaya"],
+            a: 1,
+            hint: "Melindungi dari syahwat dan api neraka."
+        },
+        {
+            context: "Imam Haddad mengingatkan agar puasa tidak sia-sia. Banyak orang puasa hanya dapat lapar dan dahaga.",
+            q: "Apa penyebab puasa menjadi sia-sia pahalanya?",
+            opts: ["Tidak makan sahur", "Tidak menjaga lisan dan anggota tubuh dari maksiat", "Tidur di siang hari", "Bekerja keras"],
+            a: 1,
+            hint: "Ghibah, dusta, dan maksiat lainnya menghapus pahala."
+        },
+        {
+            context: "Haji adalah kewajiban yang berat. Namun ada ancaman berat bagi yang mampu tapi menundanya.",
+            q: "Bagaimana ancaman bagi orang mampu yang meninggal dunia padahal belum berhaji (tanpa udzur)?",
+            opts: ["Ia mati dalam keadaan miskin", "Ia mati boleh memilih sebagai Yahudi atau Nasrani", "Ia mati dalam keadaan sakit", "Ia mati tidak dikenal orang"],
+            a: 1,
+            hint: "Falyamut in sya'a yahudiyyan aw nashraniyan."
+        },
+        {
+            context: "Istilah 'Haji Mabrur' sering kita dengar.",
+            q: "Apa balasan mutlak bagi Haji yang Mabrur menurut hadits?",
+            opts: ["Harta yang melimpah", "Gelar Pak Haji", "Surga", "Umur panjang"],
+            a: 2,
+            hint: "Laisa lahu jaza'un illal jannah."
+        },
+        {
+            context: "Air Zam-zam memiliki keistimewaan khusus.",
+            q: "Apa kunci khasiat air Zam-zam menurut hadits?",
+            opts: ["Diminum saat dingin", "Tergantung niat peminumnya (Lima syuriba lahu)", "Diminum di Mekkah saja", "Diminum dengan berdiri"],
+            a: 1,
+            hint: "Sesuai doa yang dipanjatkan saat meminumnya."
+        },
+        {
+            context: "Amar Ma'ruf Nahi Munkar memiliki tingkatan dalam pelaksanaannya.",
+            q: "Apa tingkatan terendah dalam merubah kemungkaran (selemah-lemah iman)?",
+            opts: ["Dengan tangan/kekuasaan", "Dengan lisan/nasehat", "Dengan hati (membenci maksiat)", "Dengan pedang"],
+            a: 2,
+            hint: "Jika tangan dan lisan tidak mampu."
+        },
+        {
+            context: "Berjihad tidak selalu berarti perang fisik.",
+            q: "Apa yang dimaksud dengan 'Jihad Akbar' menurut hadits yang dikutip?",
+            opts: ["Perang Badar", "Perang Uhud", "Jihad melawan hawa nafsu", "Jihad mengumpulkan harta"],
+            a: 2,
+            hint: "Musuhnya ada dalam diri sendiri."
+        },
+        {
+            context: "Seorang pemimpin memikul tanggung jawab berat.",
+            q: "Apa ancaman bagi pemimpin yang mati dalam keadaan menipu rakyatnya?",
+            opts: ["Rakyat akan demo", "Allah mengharamkan surga atasnya", "Tidak akan dipilih lagi", "Hartanya akan habis"],
+            a: 1,
+            hint: "Haramallahu 'alaihil jannah."
+        },
+        {
+            context: "Berbakti kepada orang tua (Birrul Walidain) sangat agung.",
+            q: "Ridha Allah digantungkan pada apa menurut hadits?",
+            opts: ["Ridha Guru", "Ridha Pemimpin", "Ridha Orang Tua", "Ridha Pasangan"],
+            a: 2,
+            hint: "Ridhallah fi ridhal walid."
+        },
+        {
+            context: "Hak tetangga sangat diperhatikan dalam Islam.",
+            q: "Malaikat Jibril terus berwasiat tentang tetangga hingga Nabi mengira apa?",
+            opts: ["Tetangga akan menjadi keluarga", "Tetangga akan mendapat warisan", "Tetangga boleh masuk rumah kapan saja", "Tetangga wajib diberi makan tiap hari"],
+            a: 1,
+            hint: "Annahu sayuwarrituhu."
+        },
+        {
+            context: "Makanan haram berdampak pada spiritualitas.",
+            q: "Apa dampak utama makanan haram terhadap doa seseorang?",
+            opts: ["Doa menjadi lebih khusyu", "Doa menjadi tertolak/tidak dikabulkan", "Doa menjadi panjang", "Tidak ada dampaknya"],
+            a: 1,
+            hint: "Bagaimana mungkin doanya dikabulkan jika makanannya haram?"
+        },
+        {
+            context: "Riba adalah dosa besar yang diperangi Allah.",
+            q: "Apa arti dasar kata 'Riba' secara bahasa?",
+            opts: ["Pengurangan", "Pertukaran", "Tambahan (Ziyadah)", "Penjualan"],
+            a: 2,
+            hint: "Ziyadah."
+        },
+        {
+            context: "Minuman keras (Khamr) dilarang keras.",
+            q: "Apa julukan bagi Khamr karena dampak buruknya?",
+            opts: ["Air Kehidupan", "Induk Segala Kejahatan (Ummul Khabaits)", "Penghangat Tubuh", "Obat Penenang"],
+            a: 1,
+            hint: "Karena dari mabuk bisa muncul zina, membunuh, dll."
+        },
+        {
+            context: "Hati adalah raja bagi anggota tubuh.",
+            q: "Hadits tentang 'Segumpal daging' mengacu pada organ apa?",
+            opts: ["Otak", "Jantung/Hati (Qalb)", "Paru-paru", "Lidah"],
+            a: 1,
+            hint: "Jika ia baik, baiklah seluruh tubuh."
+        },
+        {
+            context: "Menjaga pandangan mata (ghaddul bashar).",
+            q: "Pandangan yang haram disebut sebagai apa oleh Iblis?",
+            opts: ["Jendela dunia", "Panah beracun", "Cermin jiwa", "Kunci hati"],
+            a: 1,
+            hint: "Sahmun masmumun."
+        },
+        {
+            context: "Sifat sombong (Kibr) sangat berbahaya.",
+            q: "Berapa kadar kesombongan yang bisa menghalangi masuk surga?",
+            opts: ["Sebesar gunung", "Sebesar bukit", "Sebesar biji sawi/atom (dzarrah)", "Sebesar kelapa"],
+            a: 2,
+            hint: "Mitsqalu dzarratin."
+        },
+        {
+            context: "Tentang hak sesama Muslim.",
+            q: "Berapa jumlah hak muslim atas muslim lainnya yang disebutkan dalam hadits populer?",
+            opts: ["3", "5", "6", "99"],
+            a: 2,
+            hint: "Jawab salam, jenguk sakit, antar jenazah, dll."
+        },
+        {
+            context: "Ghibah (menggunjing) sangat dilarang.",
+            q: "Ghibah diibaratkan dalam Al-Qur'an seperti memakan apa?",
+            opts: ["Daging babi", "Daging saudaranya yang sudah mati", "Buah beracun", "Api neraka"],
+            a: 1,
+            hint: "Ayuhibbu ahadukum an ya'kula lahma akhihi..."
+        },
+        {
+            context: "Namimah adalah penyakit lisan yang berbahaya.",
+            q: "Apa arti dari Namimah?",
+            opts: ["Berdusta", "Mengadu domba", "Mencaci maki", "Bersumpah palsu"],
+            a: 1,
+            hint: "Memindahkan omongan untuk merusak hubungan."
+        },
+        {
+            context: "Sikap Wara' sangat dianjurkan dalam mencari rezeki.",
+            q: "Apa definisi Wara'?",
+            opts: ["Berani mengambil resiko", "Kehati-hatian meninggalkan yang syubhat dan haram", "Hidup hemat", "Rajin bekerja"],
+            a: 1,
+            hint: "Meninggalkan yang meragukan."
+        },
+        {
+            context: "Dalam dakwah, sikap lemah lembut sangat penting.",
+            q: "Istilah 'Rifq' dalam dakwah berarti?",
+            opts: ["Tegas", "Keras", "Lemah lembut", "Terburu-buru"],
+            a: 2,
+            hint: "Ma kana rifqu fi syaiin illa zanahu."
+        },
+        {
+            context: "Tentang Taubat.",
+            q: "Apa yang dimaksud dengan Taubat Nasuha?",
+            opts: ["Taubat sambal", "Taubat yang semurni-murninya dan jujur", "Taubat saat sakaratul maut", "Taubat hanya di lisan"],
+            a: 1,
+            hint: "Taubat yang tulus dan tidak mengulangi lagi."
+        },
+        {
+            context: "Dalam haji, ada syarat kemampuan.",
+            q: "Istilah untuk 'mampu' dalam syarat haji adalah?",
+            opts: ["Iqamah", "Istitha'ah", "Istiqamah", "Ikhlas"],
+            a: 1,
+            hint: "Manistatha'a ilaihi sabila."
+        },
+        {
+            context: "Tentang Silaturahmi.",
+            q: "Apa ancaman bagi pemutus silaturahmi?",
+            opts: ["Tidak akan masuk surga", "Akan miskin", "Akan sakit", "Akan dijauhi teman"],
+            a: 0,
+            hint: "La yadkhulul jannah qathi' (rahim)."
+        },
+        {
+            context: "Tentang menjaga lisan.",
+            q: "Nabi bersabda: 'Barangsiapa beriman kepada Allah dan hari akhir, hendaklah ia...'",
+            opts: ["Shalat malam", "Berkata baik atau diam", "Bersedekah", "Berpuasa"],
+            a: 1,
+            hint: "Fal yaqul khairan aw liyasmut."
+        },
+        {
+            context: "Tentang penyakit hati Riya'.",
+            q: "Riya' sering disebut sebagai?",
+            opts: ["Syirik Besar", "Syirik Kecil (Khafi)", "Dosa Kecil", "Kufur Nikmat"],
+            a: 1,
+            hint: "Asy-syirkul asghar."
+        },
+        {
+            context: "Tentang Hasad (Dengki).",
+            q: "Apa bahaya Hasad terhadap amal kebaikan?",
+            opts: ["Menambah pahala", "Memakan kebaikan seperti api memakan kayu bakar", "Membuat hati tenang", "Tidak berpengaruh"],
+            a: 1,
+            hint: "Ya'kulul hasanat kama ta'kulun narul hathab."
+        },
+        {
+            context: "Tentang Panjang Angan-angan (Tulul Amal).",
+            q: "Apa dampak buruk dari Tulul Amal?",
+            opts: ["Membuat semangat ibadah", "Menunda-nunda taubat dan cinta dunia", "Menjadikan kaya", "Membuat umur panjang"],
+            a: 1,
+            hint: "Merasa hidup selamanya sehingga malas beramal."
+        },
+        {
+            context: "Tentang Sabar.",
+            q: "Sabar dikatakan sebagai separuh dari?",
+            opts: ["Ilmu", "Iman", "Islam", "Ihsan"],
+            a: 1,
+            hint: "Ash-shabru nishful iman."
+        },
+        {
+            context: "Tentang Tawakkal.",
+            q: "Tawakkal yang benar dilakukan setelah?",
+            opts: ["Berdoa saja", "Berusaha/Ikhtiar maksimal", "Diam saja", "Pasrah tanpa usaha"],
+            a: 1,
+            hint: "Ikat untamu, baru bertawakkal."
+        },
+        {
+            context: "Tentang Ridha.",
+            q: "Ridha terhadap takdir Allah akan membuahkan?",
+            opts: ["Ketenangan hati", "Kekayaan", "Jabatan", "Kesedihan"],
+            a: 0,
+            hint: "Menerima apa adanya membuat hati tenang."
+        },
+        {
+            context: "Tentang Husnul Khatimah.",
+            q: "Apa kunci utama meraih Husnul Khatimah?",
+            opts: ["Banyak harta", "Istiqamah dalam ketaatan semasa hidup", "Punya jabatan", "Keturunan ulama"],
+            a: 1,
+            hint: "Seseorang akan mati sesuai kebiasaan hidupnya."
+        },
+        {
+            context: "Tentang Akidah Ahlussunnah.",
+            q: "Sifat Allah 'Mukhalafatu lil hawadits' artinya?",
+            opts: ["Allah Maha Esa", "Allah Berbeda dengan makhluk-Nya", "Allah Maha Kuasa", "Allah Maha Mendengar"],
+            a: 1,
+            hint: "Tidak ada sesuatupun yang serupa dengan Dia."
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function loadSection(id) {
+        document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+        
+        document.getElementById(id).classList.add('active');
+        // Find button with specific onclick
+        const btns = document.querySelectorAll('.nav-btn');
+        for(let btn of btns) {
+            if(btn.getAttribute('onclick').includes(id)) {
+                btn.classList.add('active');
+                break;
+            }
+        }
+        document.querySelector('main').scrollTop = 0;
+
+        if(id === 'quiz') {
+            loadQuiz();
+        }
+    }
+
+    function loadQuiz() {
+        if(currentQ >= quizData.length) {
+            showResult();
+            return;
+        }
+
+        const q = quizData[currentQ];
+        const quizArea = document.getElementById('quiz-area');
+        const feedback = document.getElementById('feedback');
+        const nextBtn = document.getElementById('next-q-btn');
+        
+        // Update UI
+        document.getElementById('q-counter').textContent = `Soal ${currentQ + 1} dari ${quizData.length}`;
+        document.getElementById('score-display').textContent = `Skor: ${score}`;
+        
+        // Progress Bar
+        const pct = ((currentQ) / quizData.length) * 100;
+        document.getElementById('progress-fill').style.width = `${pct}%`;
+
+        // Reset
+        feedback.style.display = 'none';
+        feedback.className = 'feedback-box';
+        nextBtn.style.display = 'none';
+
+        let html = `
+            <div class="question-box">
+                <div class="context-text">${q.context}</div>
+                <div class="q-text">${q.q}</div>
+                <div class="options-grid">
+        `;
+
+        q.opts.forEach((opt, idx) => {
+            html += `<button class="option-btn" onclick="checkAnswer(${idx}, this)">${opt}</button>`;
+        });
+
+        html += `</div></div>`;
+        quizArea.innerHTML = html;
+    }
+
+    function checkAnswer(selectedIndex, btn) {
+        const q = quizData[currentQ];
+        const feedback = document.getElementById('feedback');
+        const nextBtn = document.getElementById('next-q-btn');
+        const allBtns = document.querySelectorAll('.option-btn');
+
+        if(selectedIndex === q.a) {
+            // Benar
+            btn.classList.add('correct');
+            feedback.innerHTML = "<strong>✅ Benar!</strong> Jawaban Anda tepat.";
+            feedback.className = "feedback-box fb-success";
+            feedback.style.display = 'block';
+            nextBtn.style.display = 'block';
+            
+            // Disable all
+            allBtns.forEach(b => b.disabled = true);
+            score++;
+        } else {
+            // Salah
+            btn.classList.add('wrong');
+            btn.disabled = true; // Disable just this one
+            feedback.innerHTML = `<strong>❌ Kurang Tepat.</strong><br><em>Petunjuk: ${q.hint}</em>`;
+            feedback.className = "feedback-box fb-error";
+            feedback.style.display = 'block';
+        }
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if(currentQ < quizData.length) {
+            loadQuiz();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('next-q-btn').style.display = 'none';
+        document.getElementById('quiz-finish').style.display = 'block';
+        document.getElementById('progress-fill').style.width = '100%';
+        document.getElementById('score-display').textContent = `Skor Akhir: ${score}`;
+    }
+
+</script>
+
+</body>
+</html>
